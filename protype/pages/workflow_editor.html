@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作流编排 - Nova Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        #workflow-canvas {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 180px);
+            background-color: #f9fafb;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+            overflow: auto;
+        }
+        
+        .dark #workflow-canvas {
+            background-color: #111827;
+            background-image: radial-gradient(#374151 1px, transparent 1px);
+        }
+        
+        .node {
+            position: absolute;
+            min-width: 180px;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: white;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: move;
+            user-select: none;
+            z-index: 10;
+        }
+        
+        .dark .node {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+        
+        .node-trigger {
+            border-color: #3b82f6;
+            border-width: 2px;
+        }
+        
+        .node-action {
+            border-color: #10b981;
+            border-width: 2px;
+        }
+        
+        .node-condition {
+            border-color: #f59e0b;
+            border-width: 2px;
+        }
+        
+        .node-output {
+            border-color: #8b5cf6;
+            border-width: 2px;
+        }
+        
+        .node-handle {
+            width: 12px;
+            height: 12px;
+            background-color: #9ca3af;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+        }
+        
+        .node-handle:hover {
+            background-color: #6b7280;
+        }
+        
+        .node-handle-input {
+            top: 50%;
+            left: -6px;
+            transform: translateY(-50%);
+        }
+        
+        .node-handle-output {
+            top: 50%;
+            right: -6px;
+            transform: translateY(-50%);
+        }
+        
+        .edge {
+            position: absolute;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .minimap {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 180px;
+            height: 120px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            z-index: 20;
+        }
+        
+        .dark .minimap {
+            background-color: rgba(31, 41, 55, 0.9);
+            border-color: #374151;
+        }
+        
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            background-color: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .dark .toolbar {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+        
+        .node-library {
+            width: 240px;
+            border-right: 1px solid #e5e7eb;
+            background-color: white;
+            overflow-y: auto;
+        }
+        
+        .dark .node-library {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+        
+        .node-library-item {
+            padding: 8px 12px;
+            margin: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+        
+        .dark .node-library-item {
+            border-color: #374151;
+        }
+        
+        .node-library-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .dark .node-library-item:hover {
+            background-color: #374151;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center space-x-4">
+                <h1 class="text-2xl font-bold">工作流编排</h1>
+                <input type="text" id="workflow-name" value="新建工作流" class="form-input py-1 px-2 text-lg font-medium border-0 border-b border-gray-300 dark:border-gray-600 bg-transparent focus:border-blue-500 focus:ring-0 w-64" />
+            </div>
+            <div class="flex space-x-2">
+                <button class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    保存
+                </button>
+                <button class="btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                    </svg>
+                    预览
+                </button>
+                <button class="btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 inline-block" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                        <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
+                    </svg>
+                    导出
+                </button>
+            </div>
+        </div>
+        
+        <div class="toolbar flex items-center space-x-3 bg-white dark:bg-gray-800 p-3 rounded-t-lg">
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md" title="撤销">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md" title="重做">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 16.707a1 1 0 001.414 0l6-6a1 1 0 000-1.414l-6-6a1 1 0 00-1.414 1.414L14.586 9H3a1 1 0 000 2h11.586l-4.293 4.293a1 1 0 000 1.414z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <div class="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md" title="放大">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md" title="缩小">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md" title="适应画布">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 011.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 011.414-1.414L15 13.586V12a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <div class="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md" title="删除选中">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            <button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md" title="复制选中">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
+                    <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z" />
+                </svg>
+            </button>
+        </div>
+        
+        <div class="flex bg-white dark:bg-gray-800 rounded-b-lg shadow-sm">
+            <!-- 节点库 -->
+            <div class="node-library">
+                <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="font-semibold">节点库</h3>
+                    <div class="relative mt-1">
+                        <input type="text" placeholder="搜索节点..." class="form-input pl-8 py-1 text-sm w-full" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 absolute left-2 top-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="p-3">
+                    <h4 class="font-medium text-sm mb-2">触发器</h4>
+                    <div class="node-library-item cursor-grab border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20" data-node-type="trigger" data-node-subtype="api">
+                        <div class="text-sm font-medium">API 调用</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">通过 API 请求触发工作流</div>
+                    </div>
+                    <div class="node-library-item cursor-grab border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20" data-node-type="trigger" data-node-subtype="webhook">
+                        <div class="text-sm font-medium">Webhook</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">通过 Webhook 调用触发</div>
+                    </div>
+                    
+                    <h4 class="font-medium text-sm mt-4 mb-2">模型</h4>
+                    <div class="node-library-item cursor-grab border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20" data-node-type="action" data-node-subtype="model">
+                        <div class="text-sm font-medium">LLM 调用</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">使用大语言模型生成内容</div>
+                    </div>
+                    <div class="node-library-item cursor-grab border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20" data-node-type="action" data-node-subtype="embedding">
+                        <div class="text-sm font-medium">文本嵌入</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">生成文本向量表示</div>
+                    </div>
+                    
+                    <h4 class="font-medium text-sm mt-4 mb-2">知识库</h4>
+                    <div class="node-library-item cursor-grab border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20" data-node-type="action" data-node-subtype="kb-query">
+                        <div class="text-sm font-medium">知识库查询</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">从知识库检索相关信息</div>
+                    </div>
+                    
+                    <h4 class="font-medium text-sm mt-4 mb-2">逻辑</h4>
+                    <div class="node-library-item cursor-grab border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20" data-node-type="condition" data-node-subtype="if">
+                        <div class="text-sm font-medium">条件判断</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">根据条件选择执行路径</div>
+                    </div>
+                    <div class="node-library-item cursor-grab border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20" data-node-type="condition" data-node-subtype="switch">
+                        <div class="text-sm font-medium">多路选择</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">根据输入选择多条执行路径</div>
+                    </div>
+                    
+                    <h4 class="font-medium text-sm mt-4 mb-2">输出</h4>
+                    <div class="node-library-item cursor-grab border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20" data-node-type="output" data-node-subtype="response">
+                        <div class="text-sm font-medium">API 响应</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">返回 API 响应数据</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工作流画布 -->
+            <div class="flex-1">
+                <div id="workflow-canvas">
+                    <!-- 示例节点 -->
+                    <div class="node node-trigger" style="top: 100px; left: 300px;">
+                        <div class="font-medium">API 调用</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">接收 HTTP 请求并返回响应</div>
+                        <div class="node-handle node-handle-output" data-handle="output"></div>
+                    </div>
+                    
+                    <div class="node node-action" style="top: 200px; left: 500px;">
+                        <div class="font-medium">LLM 调用</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">处理用户输入并生成回复</div>
+                        <div class="node-handle node-handle-input" data-handle="input"></div>
+                        <div class="node-handle node-handle-output" data-handle="output"></div>
+                    </div>
+                    
+                    <div class="node node-output" style="top: 300px; left: 700px;">
+                        <div class="font-medium">API 响应</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">返回最终结果</div>
+                        <div class="node-handle node-handle-input" data-handle="input"></div>
+                    </div>
+                    
+                    <!-- 连线将通过 JS 动态创建 -->
+                </div>
+                
+                <!-- 小地图 -->
+                <div class="minimap">
+                    <!-- 小地图内容将通过 JS 动态创建 -->
+                </div>
+            </div>
+            
+            <!-- 属性面板 -->
+            <div class="w-72 border-l border-gray-200 dark:border-gray-700 p-4 overflow-y-auto">
+                <h3 class="font-semibold mb-3">属性面板</h3>
+                
+                <div class="mb-4 empty-state hidden">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">选择节点查看属性</p>
+                </div>
+                
+                <div class="node-properties">
+                    <div class="text-sm font-medium mb-2">LLM 调用</div>
+                    
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium mb-1">节点名称</label>
+                        <input type="text" class="form-input py-1 text-sm w-full" value="生成回复" />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium mb-1">模型选择</label>
+                        <select class="form-input py-1 text-sm w-full">
+                            <option>GPT-4</option>
+                            <option selected>GPT-3.5 Turbo</option>
+                            <option>本地 LLaMA 2</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium mb-1">系统提示</label>
+                        <textarea class="form-input py-1 text-sm w-full h-20 resize-none">你是一个专业的客服助手，根据用户的问题提供简洁、准确的回答。</textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium mb-1">温度</label>
+                        <div class="flex items-center">
+                            <input type="range" min="0" max="2" step="0.1" value="0.7" class="w-full" />
+                            <span class="ml-2 text-sm w-8 text-center">0.7</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium mb-1">最大回复长度</label>
+                        <input type="number" class="form-input py-1 text-sm w-full" value="1000" />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="block text-sm font-medium mb-1">高级设置</label>
+                        <div class="flex items-center mt-1">
+                            <input type="checkbox" id="stream" class="mr-2" checked />
+                            <label for="stream" class="text-sm">流式传输响应</label>
+                        </div>
+                        <div class="flex items-center mt-1">
+                            <input type="checkbox" id="cache" class="mr-2" checked />
+                            <label for="cache" class="text-sm">启用缓存</label>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-3 mt-3 border-t border-gray-200 dark:border-gray-700">
+                        <button class="btn btn-primary w-full">应用更改</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 基本工作流编辑器功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 实现节点拖拽功能
+            const nodes = document.querySelectorAll('.node');
+            
+            nodes.forEach(node => {
+                let isDragging = false;
+                let offsetX, offsetY;
+                
+                node.addEventListener('mousedown', function(e) {
+                    if (e.target.classList.contains('node-handle')) return;
+                    
+                    isDragging = true;
+                    
+                    // 获取鼠标相对于节点的偏移
+                    const rect = node.getBoundingClientRect();
+                    offsetX = e.clientX - rect.left;
+                    offsetY = e.clientY - rect.top;
+                    
+                    // 使节点显示在最前面
+                    node.style.zIndex = '100';
+                    
+                    // 防止文本选择
+                    e.preventDefault();
+                });
+                
+                document.addEventListener('mousemove', function(e) {
+                    if (!isDragging) return;
+                    
+                    const canvas = document.getElementById('workflow-canvas');
+                    const canvasRect = canvas.getBoundingClientRect();
+                    
+                    // 计算新位置，相对于画布
+                    let newLeft = e.clientX - canvasRect.left - offsetX;
+                    let newTop = e.clientY - canvasRect.top - offsetY;
+                    
+                    // 设置节点位置
+                    node.style.left = newLeft + 'px';
+                    node.style.top = newTop + 'px';
+                    
+                    // 更新连线位置（在实际应用中需要更复杂的逻辑）
+                });
+                
+                document.addEventListener('mouseup', function() {
+                    if (isDragging) {
+                        isDragging = false;
+                        node.style.zIndex = '10';
+                    }
+                });
+                
+                // 点击节点显示属性
+                node.addEventListener('click', function() {
+                    // 移除其他节点的选中状态
+                    nodes.forEach(n => n.classList.remove('ring-2', 'ring-blue-500'));
+                    
+                    // 添加当前节点的选中状态
+                    node.classList.add('ring-2', 'ring-blue-500');
+                    
+                    // 显示属性面板（实际应用中需要根据节点类型显示不同的属性）
+                    document.querySelector('.empty-state').classList.add('hidden');
+                    document.querySelector('.node-properties').classList.remove('hidden');
+                });
+            });
+            
+            // 处理从节点库拖拽新节点到画布的逻辑
+            const nodeItems = document.querySelectorAll('.node-library-item');
+            const canvas = document.getElementById('workflow-canvas');
+            
+            nodeItems.forEach(item => {
+                item.addEventListener('dragstart', function(e) {
+                    // 传递节点类型信息
+                    e.dataTransfer.setData('nodeType', item.getAttribute('data-node-type'));
+                    e.dataTransfer.setData('nodeSubtype', item.getAttribute('data-node-subtype'));
+                });
+            });
+            
+            canvas.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+            
+            canvas.addEventListener('drop', function(e) {
+                e.preventDefault();
+                
+                // 获取拖拽的节点类型
+                const nodeType = e.dataTransfer.getData('nodeType');
+                const nodeSubtype = e.dataTransfer.getData('nodeSubtype');
+                
+                // 获取鼠标在画布中的位置
+                const canvasRect = canvas.getBoundingClientRect();
+                const x = e.clientX - canvasRect.left;
+                const y = e.clientY - canvasRect.top;
+                
+                // 创建新节点（实际应用中需要根据节点类型创建不同的节点）
+                if (nodeType && nodeSubtype) {
+                    console.log(`创建 ${nodeType}/${nodeSubtype} 节点在位置 (${x}, ${y})`);
+                    // 此处添加创建节点的代码
+                }
+            });
+        });
+        
+        // 处理主页面发送的主题变更消息
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'themeChange') {
+                if (event.data.darkMode) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        });
+        
+        // 初始化检查暗色模式
+        if (window.parent && window.parent.document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</body>
+</html> 

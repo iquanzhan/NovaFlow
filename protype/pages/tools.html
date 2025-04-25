@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Nova Flow - 工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl font-bold text-indigo-700 mb-6">AI 工具</h1>
+        
+        <!-- 工具分类导航 -->
+        <div class="flex space-x-2 mb-6 overflow-x-auto pb-2">
+            <button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                全部工具
+            </button>
+            <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                文本处理
+            </button>
+            <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                数据分析
+            </button>
+            <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                对话构建
+            </button>
+            <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                工作流程
+            </button>
+            <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                集成接口
+            </button>
+        </div>
+        
+        <!-- 工具卡片网格 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 工具卡片 1 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden border border-gray-200 hover:border-indigo-500 transition-colors">
+                <div class="p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">对话设计器</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">设计和构建交互式对话流程，支持多轮对话和条件分支。</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">热门工具</span>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">使用工具 →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工具卡片 2 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden border border-gray-200 hover:border-indigo-500 transition-colors">
+                <div class="p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">知识提取器</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">从文档中自动提取结构化知识，构建知识图谱。</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">数据分析</span>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">使用工具 →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工具卡片 3 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden border border-gray-200 hover:border-indigo-500 transition-colors">
+                <div class="p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">API 生成器</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">将AI应用转换为API接口，支持快速集成到现有系统。</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">集成接口</span>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">使用工具 →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工具卡片 4 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden border border-gray-200 hover:border-indigo-500 transition-colors">
+                <div class="p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">工作流编排</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">可视化设计AI处理流程，连接多个组件构建复杂应用。</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">工作流程</span>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">使用工具 →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工具卡片 5 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden border border-gray-200 hover:border-indigo-500 transition-colors">
+                <div class="p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">数据分析引擎</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">智能分析数据，提取趋势和见解，生成图表和报告。</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">数据分析</span>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">使用工具 →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 工具卡片 6 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden border border-gray-200 hover:border-indigo-500 transition-colors">
+                <div class="p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800">预训练模型库</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">访问各种预训练AI模型，简化应用开发流程。</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <span class="px-2 py-1 bg-indigo-100 text-indigo-800 text-xs rounded-full">基础工具</span>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">使用工具 →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

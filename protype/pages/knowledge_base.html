@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识库 - Nova Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">知识库</h1>
+        <button id="addKnowledgeBtn" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            添加知识库
+        </button>
+    </div>
+    
+    <!-- 知识库标签 -->
+    <div class="mb-6">
+        <div class="border-b border-gray-200 dark:border-gray-700">
+            <nav class="-mb-px flex space-x-8">
+                <a href="#" class="border-blue-500 text-blue-600 dark:text-blue-400 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">我的知识库</a>
+                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">共享知识库</a>
+                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">已归档</a>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- 搜索和筛选 -->
+    <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
+        <div class="relative flex-1">
+            <input type="text" placeholder="搜索知识库..." class="form-input pl-10 py-2 w-full" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+        </div>
+        <div class="flex gap-3">
+            <select class="form-input py-2">
+                <option>所有类型</option>
+                <option>文档</option>
+                <option>网页</option>
+                <option>数据库</option>
+            </select>
+            <select class="form-input py-2">
+                <option>最近更新</option>
+                <option>名称</option>
+                <option>文档数量</option>
+                <option>创建时间</option>
+            </select>
+        </div>
+    </div>
+    
+    <!-- 知识库列表 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <!-- 产品知识库 -->
+        <div class="card">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center">
+                    <div class="bg-blue-100 dark:bg-blue-900 p-2 rounded-md mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold">产品知识库</h2>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">15 个文档</span>
+                    </div>
+                </div>
+                <div class="dropdown relative">
+                    <button class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">包含产品手册、使用指南和常见问题解答的综合知识库。</p>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">最近更新</span>
+                    <span>2023-08-15</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">嵌入模型</span>
+                    <span>OpenAI Ada 002</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">使用状态</span>
+                    <span class="text-green-500">活跃</span>
+                </div>
+            </div>
+            <div class="flex mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 justify-between">
+                <button class="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium">查看详情</button>
+                <button class="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium">添加文档</button>
+            </div>
+        </div>
+        
+        <!-- 客服知识库 -->
+        <div class="card">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center">
+                    <div class="bg-green-100 dark:bg-green-900 p-2 rounded-md mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold">客服知识库</h2>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">28 个文档</span>
+                    </div>
+                </div>
+                <div class="dropdown relative">
+                    <button class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">客户服务相关资料，包括解决方案、政策和处理流程。</p>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">最近更新</span>
+                    <span>2023-09-02</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">嵌入模型</span>
+                    <span>OpenAI Ada 002</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">使用状态</span>
+                    <span class="text-green-500">活跃</span>
+                </div>
+            </div>
+            <div class="flex mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 justify-between">
+                <button class="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium">查看详情</button>
+                <button class="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium">添加文档</button>
+            </div>
+        </div>
+        
+        <!-- 销售资料 -->
+        <div class="card">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center">
+                    <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-md mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold">销售资料</h2>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">8 个文档</span>
+                    </div>
+                </div>
+                <div class="dropdown relative">
+                    <button class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">包含产品价格表、竞品分析和销售策略等销售团队常用资料。</p>
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">最近更新</span>
+                    <span>2023-07-25</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">嵌入模型</span>
+                    <span>本地嵌入模型</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500 dark:text-gray-400">使用状态</span>
+                    <span class="text-green-500">活跃</span>
+                </div>
+            </div>
+            <div class="flex mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 justify-between">
+                <button class="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium">查看详情</button>
+                <button class="text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 text-sm font-medium">添加文档</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 最近添加的文档 -->
+    <h2 class="text-xl font-semibold mb-4">最近添加的文档</h2>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden mb-8">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">文档名称</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">知识库</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">文件类型</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">大小</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">状态</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">添加时间</th>
+                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">操作</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <span>产品手册 v2.0.pdf</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">产品知识库</td>
+                    <td class="px-6 py-4 whitespace-nowrap">PDF</td>
+                    <td class="px-6 py-4 whitespace-nowrap">3.2 MB</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">已索引</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-08-15</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3">查看</a>
+                        <a href="#" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <span>退款政策.docx</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">客服知识库</td>
+                    <td class="px-6 py-4 whitespace-nowrap">DOCX</td>
+                    <td class="px-6 py-4 whitespace-nowrap">0.5 MB</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">已索引</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-09-02</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3">查看</a>
+                        <a href="#" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">删除</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                            <span>Q3销售目标.xlsx</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">销售资料</td>
+                    <td class="px-6 py-4 whitespace-nowrap">XLSX</td>
+                    <td class="px-6 py-4 whitespace-nowrap">1.1 MB</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">处理中</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-07-25</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="#" class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3">查看</a>
+                        <a href="#" class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- 添加知识库模态框 -->
+    <div id="addKnowledgeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">添加新知识库</h2>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <form id="addKnowledgeForm">
+                <div class="mb-4">
+                    <label for="kbName" class="block text-sm font-medium mb-1">知识库名称</label>
+                    <input type="text" id="kbName" class="form-input py-1 text-sm w-full" placeholder="输入知识库名称" required>
+                </div>
+                <div class="mb-4">
+                    <label for="kbDescription" class="block text-sm font-medium mb-1">描述</label>
+                    <textarea id="kbDescription" class="form-input py-1 text-sm w-full h-20 resize-none" placeholder="描述这个知识库的用途..."></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="embeddingModel" class="block text-sm font-medium mb-1">嵌入模型</label>
+                    <select id="embeddingModel" class="form-input py-1 text-sm w-full">
+                        <option value="openai">OpenAI Ada 002</option>
+                        <option value="local">本地嵌入模型</option>
+                        <option value="custom">自定义模型</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium mb-1">文件来源</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="fileUpload" class="mr-2" checked>
+                            <label for="fileUpload" class="text-sm">本地文件上传</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="webCrawl" class="mr-2">
+                            <label for="webCrawl" class="text-sm">网页抓取</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="database" class="mr-2">
+                            <label for="database" class="text-sm">数据库连接</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="kbPermission" class="block text-sm font-medium mb-1">访问权限</label>
+                    <select id="kbPermission" class="form-input py-1 text-sm w-full">
+                        <option value="private">仅个人</option>
+                        <option value="team">团队成员</option>
+                        <option value="public">所有用户</option>
+                    </select>
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" id="cancelAddBtn" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">取消</button>
+                    <button type="submit" class="btn btn-primary">创建知识库</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // 模态框控制
+        document.getElementById('addKnowledgeBtn').addEventListener('click', function() {
+            document.getElementById('addKnowledgeModal').classList.remove('hidden');
+        });
+        
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            document.getElementById('addKnowledgeModal').classList.add('hidden');
+        });
+        
+        document.getElementById('cancelAddBtn').addEventListener('click', function() {
+            document.getElementById('addKnowledgeModal').classList.add('hidden');
+        });
+        
+        // 表单提交
+        document.getElementById('addKnowledgeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('知识库创建功能将在后端集成后实现');
+            document.getElementById('addKnowledgeModal').classList.add('hidden');
+        });
+        
+        // 处理主页面发送的主题变更消息
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'themeChange') {
+                if (event.data.darkMode) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        });
+        
+        // 初始化检查暗色模式
+        if (window.parent && window.parent.document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
+</body>
+</html> 
