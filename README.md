@@ -1,6 +1,6 @@
 # NovaFlow
 
-NovaFlow -  新一代 Java LLM 应用开发平台，助力AI大模型在现有企业级应用中落地，助力企业数字化转型。
+NovaFlow - 新一代 Java LLM 应用开发平台，对标coze、dify，让企业应用AI化，助力AI大模型在企业级应用中落地。
 
 # 🚀项目愿景
 
